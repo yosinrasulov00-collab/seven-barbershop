@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Админка — SEVEN</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            dark: { DEFAULT: '#070707', card: '#12100d', border: '#3a2f1d' },
+            gold: { DEFAULT: '#d8a63a', light: '#ffd66b', dark: '#94651a' },
+          },
+          fontFamily: {
+            display: ['Playfair Display', 'Georgia', 'serif'],
+            sans: ['Manrope', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body class="admin-body bg-dark text-white font-sans antialiased min-h-screen">
+
+  <!-- Вход -->
+  <div id="login-screen" class="min-h-screen flex items-center justify-center px-4">
+    <form id="login-form" class="admin-glass w-full max-w-sm p-8 rounded-2xl bg-dark-card border border-dark-border">
+      <h1 class="font-display text-3xl text-gold text-center mb-2">Админка</h1>
+      <p class="text-gray-500 text-sm text-center mb-8">Управление сайтом парикмахерской</p>
+      <label class="block text-sm text-gray-400 mb-2" for="login-password">пароль</label>
+      <input
+        id="login-password"
+        type="password"
+        autocomplete="current-password"
+        class="admin-input w-full px-4 py-3 rounded-xl bg-dark border border-dark-border text-white mb-4"
+        placeholder="Введите пароль"
+        required
+      />
+      <p id="login-error" class="hidden text-red-400 text-sm mb-3"></p>
+      <button type="submit" class="w-full py-3 rounded-xl bg-gold text-dark font-semibold hover:bg-gold-light transition-colors">
+        Войти
+      </button>
+      <a href="/" class="block text-center text-gray-500 text-sm mt-6 hover:text-gold transition-colors">← На сайт</a>
+    </form>
+  </div>
+
+  <!-- Панель -->
+  <div id="admin-app" class="hidden">
+    <header class="admin-header sticky top-0 z-40 bg-dark/95 backdrop-blur-md border-b border-dark-border">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+        <div class="flex items-center gap-3 min-w-0">
+          <span class="font-display text-xl text-gold shrink-0">Админка</span>
+          <span id="header-brand" class="text-gray-500 text-sm truncate hidden sm:inline"></span>
+        </div>
+        <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+          <a href="/" target="_blank" rel="noopener" class="text-sm text-gray-400 hover:text-gold px-3 py-2 rounded-lg border border-dark-border hover:border-gold/40 transition-colors">
+            Сайт ↗
+          </a>
+          <button type="button" id="btn-save" class="px-4 sm:px-5 py-2 rounded-xl bg-gold text-dark text-sm font-semibold hover:bg-gold-light transition-colors">
+            Сохранить
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 py-6 pb-28">
+      <nav class="flex flex-wrap gap-2 mb-8" role="tablist">
+        <button type="button" data-tab="site" class="admin-tab active px-4 py-2 rounded-xl text-sm border border-dark-border text-gray-400 transition-colors">Сайт</button>
+        <button type="button" data-tab="hero" class="admin-tab px-4 py-2 rounded-xl text-sm border border-dark-border text-gray-400 transition-colors">Фон</button>
+        <button type="button" data-tab="services" class="admin-tab px-4 py-2 rounded-xl text-sm border border-dark-border text-gray-400 transition-colors">Услуги</button>
+        <button type="button" data-tab="masters" class="admin-tab px-4 py-2 rounded-xl text-sm border border-dark-border text-gray-400 transition-colors">Мастера</button>
+        <button type="button" data-tab="contacts" class="admin-tab px-4 py-2 rounded-xl text-sm border border-dark-border text-gray-400 transition-colors">Контакты</button>
+      </nav>
+
+      <!-- Сайт / название -->
+      <section id="panel-site" class="tab-panel space-y-5">
+        <div class="admin-glass p-6 rounded-2xl bg-dark-card border border-dark-border">
+          <h2 class="font-display text-2xl text-gold mb-1">Название и тексты</h2>
+          <p class="text-gray-500 text-sm mb-6">То, что видят гости в шапке и на главном экране</p>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm text-gray-400 mb-1.5" for="brand-name">Название салона</label>
+              <input id="brand-name" type="text" class="admin-input w-full px-4 py-2.5 rounded-xl bg-dark border border-dark-border" placeholder="SEVEN" />
+            </div>
+            <div>
+              <label class="block text-sm text-gray-400 mb-1.5" for="brand-label">Подпись в меню</label>
+              <input id="brand-label" type="text" class="admin-input w-full px-4 py-2.5 rounded-xl bg-dark border border-dark-border" placeholder="Barber Shop" />
+            </div>
+            <div class="sm:col-span-2">
+              <label class="block text-sm text-gray-400 mb-1.5" for="brand-tagline">Золотая строка над названием</label>
+              <input id="brand-tagline" type="text" class="admin-input w-full px-4 py-2.5 rounded-xl bg-dark border border-dark-border" placeholder="Premium Barber Shop" />
+            </div>
+            <div class="sm:col-span-2">
+              <label class="block text-sm text-gray-400 mb-1.5" for="brand-subtitle">Слоган под названием</label>
+              <input id="brand-subtitle" type="text" class="admin-input w-full px-4 py-2.5 rounded-xl bg-dark border border-dark-border" placeholder="Стиль · точность · характер" />
+            </div>
+          </div>
+        </div>
+        <div class="admin-glass p-6 rounded-2xl bg-dark-card border border-dark-border">
+          <h3 class="font-semibold mb-4">Заголовки разделов</h3>
+          <div class="grid gap-4">
+            <div>
+              <label class="block text-sm text-gray-400 mb-1.5" for="services-title">Блок услуг (первая часть)</label>
+              <input id="services-title" type="text" class="admin-input w-full px-4 py-2.5 rounded-xl bg-dark border border-dark-border" placeholder="4 услуги" />
+            </div>
+            <div>
+              <label class="block text-sm text-gray-400 mb-1.5" for="services-subtitle">Подзаголовок услуг</label>
+              <input id="services-subtitle" type="text" class="admin-input w-full px-4 py-2.5 rounded-xl bg-dark border border-dark-border" />
+            </div>
+            <div>
+              <label class="block text-sm text-gray-400 mb-1.5" for="masters-title">Заголовок мастеров</label>
+              <input id="masters-title" type="text" class="admin-input w-full px-4 py-2.5 rounded-xl bg-dark border border-dark-border" />
+            </div>
+            <div>
+              <label class="block text-sm text-gray-400 mb-1.5" for="masters-subtitle">Подзаголовок мастеров</label>
+              <input id="masters-subtitle" type="text" class="admin-input w-full px-4 py-2.5 rounded-xl bg-dark border border-dark-border" />
+            </div>
+            <div>
+              <label class="block text-sm text-gray-400 mb-1.5" for="price-note">Примечание к ценам</label>
+              <input id="price-note" type="text" class="admin-input w-full px-4 py-2.5 rounded-xl bg-dark border border-dark-border" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Фон -->
+      <section id="panel-hero" class="tab-panel hidden space-y-5">
+        <div class="admin-glass p-6 rounded-2xl bg-dark-card border border-dark-border">
+          <h2 class="font-display text-2xl text-gold mb-1">Фон главного экрана</h2>
+          <p class="text-gray-500 text-sm mb-6">Загрузите фото салона или вставьте ссылку на картинку</p>
+          <img id="hero-preview" src="" alt="Превью фона" class="hero-preview w-full max-w-xl rounded-xl border border-dark-border mb-6 bg-dark" />
+          <div class="flex flex-wrap gap-3 mb-6">
+            <label class="cursor-pointer inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gold/15 text-gold border border-gold/30 hover:bg-gold/25 transition-colors text-sm font-medium">
+              <input id="hero-file" type="file" accept="image/png,image/jpeg,image/webp,image/gif" class="hidden" />
+              Загрузить с компьютера
+            </label>
+            <button type="button" id="hero-upload-btn" class="hidden"></button>
+          </div>
+          <div>
+            <label class="block text-sm text-gray-400 mb-1.5" for="hero-url">Или ссылка на фото</label>
+            <input id="hero-url" type="url" class="admin-input w-full px-4 py-2.5 rounded-xl bg-dark border border-dark-border" placeholder="images/hero-bg.png" />
+            <p class="text-gray-600 text-xs mt-2">После загрузки с компьютера ссылка подставится автоматически</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Услуги -->
+      <section id="panel-services" class="tab-panel hidden space-y-4">
+        <div class="flex items-center justify-between gap-4 flex-wrap">
+          <div>
+            <h2 class="font-display text-2xl text-gold">Услуги</h2>
+            <p class="text-gray-500 text-sm">Цены и описания на сайте</p>
+          </div>
+          <button type="button" id="add-service" class="px-4 py-2 rounded-xl border border-gold text-gold text-sm font-medium hover:bg-gold hover:text-dark transition-colors">
+            + Добавить услугу
+          </button>
+        </div>
+        <div id="services-list" class="space-y-4"></div>
+      </section>
+
+      <!-- Мастера -->
+      <section id="panel-masters" class="tab-panel hidden space-y-4">
+        <div class="flex items-center justify-between gap-4 flex-wrap">
+          <div>
+            <h2 class="font-display text-2xl text-gold">Мастера</h2>
+            <p class="text-gray-500 text-sm">Имя, описание и фото</p>
+          </div>
+          <button type="button" id="add-master" class="px-4 py-2 rounded-xl border border-gold text-gold text-sm font-medium hover:bg-gold hover:text-dark transition-colors">
+            + Добавить мастера
+          </button>
+        </div>
+        <div id="masters-list" class="space-y-4"></div>
+      </section>
+
+      <!-- Контакты -->
+      <section id="panel-contacts" class="tab-panel hidden space-y-5">
+        <div class="admin-glass p-6 rounded-2xl bg-dark-card border border-dark-border">
+          <h2 class="font-display text-2xl text-gold mb-6">Контакты и Telegram</h2>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div class="sm:col-span-2">
+              <label class="block text-sm text-gray-400 mb-1.5" for="telegram-url">Ссылка Telegram (для кнопок «Заказать»)</label>
+              <input id="telegram-url" type="url" class="admin-input w-full px-4 py-2.5 rounded-xl bg-dark border border-dark-border" placeholder="https://t.me/your_bot" />
+            </div>
+            <div>
+              <label class="block text-sm text-gray-400 mb-1.5" for="telegram-username">@ для отображения</label>
+              <input id="telegram-username" type="text" class="admin-input w-full px-4 py-2.5 rounded-xl bg-dark border border-dark-border" placeholder="@your_barber_bot" />
+            </div>
+            <div>
+              <label class="block text-sm text-gray-400 mb-1.5" for="hours">Часы работы (на сайте)</label>
+              <input id="hours" type="text" class="admin-input w-full px-4 py-2.5 rounded-xl bg-dark border border-dark-border" placeholder="Пн–Сб: 8:00 – 23:00" />
+            </div>
+            <div class="sm:col-span-2 p-4 rounded-xl bg-dark border border-gold/20">
+              <p class="text-gold text-sm font-medium mb-3">Ответ бота после заказа услуги</p>
+              <div class="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm text-gray-400 mb-1.5" for="order-confirm">Первая строка</label>
+                  <input id="order-confirm" type="text" class="admin-input w-full px-4 py-2.5 rounded-xl bg-dark border border-dark-border" placeholder="Заявка принята!" />
+                </div>
+                <div>
+                  <label class="block text-sm text-gray-400 mb-1.5" for="visit-time">Время визита</label>
+                  <input id="visit-time" type="text" class="admin-input w-full px-4 py-2.5 rounded-xl bg-dark border border-dark-border" placeholder="Приходите с 8:00 до 23:00." />
+                </div>
+              </div>
+            </div>
+            <div class="sm:col-span-2">
+              <label class="block text-sm text-gray-400 mb-1.5" for="address">Адрес</label>
+              <input id="address" type="text" class="admin-input w-full px-4 py-2.5 rounded-xl bg-dark border border-dark-border" />
+            </div>
+            <div>
+              <label class="block text-sm text-gray-400 mb-1.5" for="lat">Широта (карта)</label>
+              <input id="lat" type="number" step="any" class="admin-input w-full px-4 py-2.5 rounded-xl bg-dark border border-dark-border" />
+            </div>
+            <div>
+              <label class="block text-sm text-gray-400 mb-1.5" for="lng">Долгота (карта)</label>
+              <input id="lng" type="number" step="any" class="admin-input w-full px-4 py-2.5 rounded-xl bg-dark border border-dark-border" />
+            </div>
+            <div class="sm:col-span-2">
+              <label class="block text-sm text-gray-400 mb-1.5" for="contacts-subtitle">Текст в блоке контактов</label>
+              <input id="contacts-subtitle" type="text" class="admin-input w-full px-4 py-2.5 rounded-xl bg-dark border border-dark-border" />
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div id="toast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50 admin-toast px-5 py-3 rounded-xl bg-dark-card border border-gold/40 text-sm shadow-xl max-w-[90vw] text-center"></div>
+  </div>
+
+  <script src="js/admin.js"></script>
+</body>
+</html>

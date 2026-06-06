@@ -1,0 +1,67 @@
+{
+  "brand": {
+    "name": "SEVEN",
+    "label": "Barber Shop",
+    "tagline": "Premium Barber Shop",
+    "subtitle": "Стиль · точность · характер"
+  },
+  "telegram": "https://t.me/BORRY_BOT",
+  "telegramUsername": "@BORRY_BOT",
+  "address": "г. Душанбе, ул. Примерная, 12",
+  "lat": 38.5598,
+  "lng": 68.7874,
+  "hours": "Пн–Сб: 8:00 – 23:00",
+  "orderConfirm": "Заявка принята!",
+  "visitTime": "",
+  "heroImage": "images/hero-bg.png",
+  "servicesTitle": "4 услуги",
+  "servicesSubtitle": "Закажите услугу в Telegram — приходите в салон",
+  "mastersTitle": "Наши мастера",
+  "mastersSubtitle": "Команда профессионалов в одном адресе — выберите своего мастера",
+  "contactsSubtitle": "Закажите в Telegram — приходите в салон по адресу на карте",
+  "priceNote": "* Цены примерные — уточняйте при заказе в Telegram",
+  "services": [
+    {
+      "name": "Мужская стрижка",
+      "price": "50 сом",
+      "description": "Классика, фейд, машинка — по вашему стилю."
+    },
+    {
+      "name": "Стрижка + борода",
+      "price": "70 сом",
+      "description": "Полный образ: стрижка и оформление бороды."
+    },
+    {
+      "name": "Моделирование бороды",
+      "price": "35 сом",
+      "description": "Контуры, линии, уход — аккуратный вид бороды."
+    },
+    {
+      "name": "Бритьё бритвой",
+      "price": "40 сом",
+      "description": "Классическое бритьё опасной бритвой с уходом."
+    }
+  ],
+  "masters": [
+    {
+      "name": "Алексей",
+      "description": "8 лет опыта · классика, fade, борода",
+      "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80"
+    },
+    {
+      "name": "Дмитрий",
+      "description": "6 лет · креативные стрижки, дизайн",
+      "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
+    },
+    {
+      "name": "Игорь",
+      "description": "10 лет · премиум, бритьё опасной бритвой",
+      "image": "images/master-3.png"
+    },
+    {
+      "name": "Максим",
+      "description": "5 лет · молодёжный стиль, тренды",
+      "image": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&q=80"
+    }
+  ]
+}

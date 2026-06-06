@@ -1,0 +1,152 @@
+html {
+  scroll-behavior: smooth;
+}
+
+:root {
+  --admin-bg: #070707;
+  --admin-card: rgba(22, 18, 13, 0.82);
+  --admin-border: rgba(255, 214, 107, 0.16);
+  --admin-gold: #d8a63a;
+  --admin-gold-light: #ffd66b;
+}
+
+.admin-body {
+  background:
+    radial-gradient(circle at 10% 10%, rgba(216, 166, 58, 0.18), transparent 26rem),
+    radial-gradient(circle at 88% 22%, rgba(255, 214, 107, 0.1), transparent 24rem),
+    linear-gradient(135deg, #050505 0%, #120e09 52%, #050505 100%);
+  color: #f7f0e8;
+}
+
+.admin-body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(circle at center, black, transparent 78%);
+}
+
+.admin-header {
+  background: rgba(7, 7, 7, 0.78) !important;
+  border-color: var(--admin-border) !important;
+  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.38);
+}
+
+.admin-glass,
+.admin-card {
+  background:
+    linear-gradient(145deg, rgba(255, 214, 107, 0.09), rgba(255, 255, 255, 0.025)),
+    var(--admin-card) !important;
+  border-color: var(--admin-border) !important;
+  box-shadow: 0 22px 70px rgba(0, 0, 0, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.admin-toast {
+  animation: adminToastIn 0.25s ease;
+}
+
+@keyframes adminToastIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.admin-card {
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admin-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 214, 107, 0.28) !important;
+}
+
+.admin-card:focus-within {
+  border-color: rgba(255, 214, 107, 0.46) !important;
+  box-shadow: 0 0 0 1px rgba(255, 214, 107, 0.14), 0 22px 70px rgba(0, 0, 0, 0.34);
+}
+
+.admin-tab.active {
+  color: var(--admin-gold-light);
+  border-color: var(--admin-gold);
+  background: linear-gradient(135deg, rgba(255, 214, 107, 0.14), rgba(216, 166, 58, 0.07));
+  box-shadow: 0 10px 28px rgba(216, 166, 58, 0.1);
+}
+
+.admin-tab:hover {
+  color: var(--admin-gold-light);
+  border-color: rgba(255, 214, 107, 0.35);
+  background: rgba(255, 214, 107, 0.055);
+}
+
+.admin-input {
+  background: rgba(5, 5, 5, 0.55) !important;
+  border-color: rgba(255, 214, 107, 0.13) !important;
+  color: #f7f0e8;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.admin-input:focus {
+  outline: none;
+  background: rgba(5, 5, 5, 0.75) !important;
+  border-color: rgba(255, 214, 107, 0.58) !important;
+  box-shadow: 0 0 0 3px rgba(255, 214, 107, 0.12);
+}
+
+.hero-preview {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.master-preview {
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+}
+
+button,
+a {
+  transition-property: color, background-color, border-color, transform, box-shadow;
+}
+
+.admin-body button,
+.admin-body .cursor-pointer {
+  color: #120c05 !important;
+  border-color: rgba(255, 231, 145, 0.65) !important;
+  background:
+    linear-gradient(135deg, #fff4bd 0%, #ffd66b 32%, #d8a63a 62%, #996317 100%) !important;
+  box-shadow:
+    0 12px 32px rgba(216, 166, 58, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+.admin-body button:hover,
+.admin-body .cursor-pointer:hover {
+  background: linear-gradient(135deg, #fff8d8 0%, #ffe07a 42%, #c88d25 100%) !important;
+  box-shadow:
+    0 16px 42px rgba(216, 166, 58, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.admin-tab.active,
+.admin-tab:hover {
+  color: #120c05 !important;
+}
+
+button:hover,
+a:hover {
+  transform: translateY(-1px);
+}
+
+::selection {
+  background: rgba(216, 166, 58, 0.45);
+  color: #fff;
+}

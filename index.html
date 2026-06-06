@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="SEVEN — Premium Barber Shop. Заказ визита в Telegram." />
+  <title>SEVEN — Barber Shop</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            dark: { DEFAULT: '#070707', card: '#12100d', border: '#3a2f1d' },
+            gold: { DEFAULT: '#d8a63a', light: '#ffd66b', dark: '#94651a' },
+          },
+          fontFamily: {
+            display: ['Playfair Display', 'Georgia', 'serif'],
+            sans: ['Manrope', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="site-body bg-dark text-white font-sans antialiased">
+
+  <!-- Header -->
+  <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <nav class="flex items-center justify-between h-16 sm:h-20">
+        <a href="#hero" class="flex flex-col items-start leading-none group">
+          <span id="brand-label" class="text-[10px] sm:text-xs tracking-[0.28em] uppercase text-gold/80 font-medium mb-0.5 group-hover:text-gold transition-colors">Barber Shop</span>
+          <span id="brand-name" class="font-display text-xl sm:text-2xl font-semibold tracking-widest text-white group-hover:text-gold transition-colors">SEVEN</span>
+        </a>
+        <ul class="hidden md:flex items-center gap-8 text-sm text-gray-300">
+          <li><a href="#advantages" class="nav-link hover:text-gold transition-colors duration-300">Преимущества</a></li>
+          <li><a href="#services" class="nav-link hover:text-gold transition-colors duration-300">Услуги</a></li>
+          <li><a href="#masters" class="nav-link hover:text-gold transition-colors duration-300">Мастера</a></li>
+          <li><a href="#contacts" class="nav-link hover:text-gold transition-colors duration-300">Контакты</a></li>
+        </ul>
+        <button id="menu-btn" type="button" class="md:hidden p-2 text-gold" aria-label="Меню">
+          <svg id="menu-icon-open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+          <svg id="menu-icon-close" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </nav>
+    </div>
+    <div id="mobile-menu" class="md:hidden hidden border-t border-dark-border bg-dark/95 backdrop-blur-md">
+      <ul class="flex flex-col px-4 py-4 gap-3 text-gray-300">
+        <li><a href="#advantages" class="mobile-link block py-2 hover:text-gold transition-colors">Преимущества</a></li>
+        <li><a href="#services" class="mobile-link block py-2 hover:text-gold transition-colors">Услуги</a></li>
+        <li><a href="#masters" class="mobile-link block py-2 hover:text-gold transition-colors">Мастера</a></li>
+        <li><a href="#contacts" class="mobile-link block py-2 hover:text-gold transition-colors">Контакты</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero: фон — фото барбершопа -->
+    <section
+      id="hero"
+      class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20"
+      data-address="г. Душанбе, ул. Примерная, 12"
+    >
+      <div class="hero-bg absolute inset-0 z-0" aria-hidden="true">
+        <img
+          id="hero-bg-img"
+          src="images/hero-bg.png"
+          alt=""
+          class="hero-bg-image"
+          loading="eager"
+        />
+      </div>
+      <div class="hero-overlay-dark absolute inset-0 z-[1]"></div>
+      <div class="hero-overlay-gradient absolute inset-0 z-[1]"></div>
+      <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center reveal hero-content-card">
+        <p id="hero-tagline" class="brand-tagline text-gold text-xs sm:text-sm tracking-[0.4em] uppercase mb-4 font-medium">
+          Premium Barber Shop
+        </p>
+        <div class="hero-title-wrap-glow">
+          <h1 id="hero-title" class="hero-title font-display font-semibold leading-none">
+            SEVEN
+          </h1>
+        </div>
+        <p id="hero-subtitle" class="text-gray-300 text-base sm:text-lg max-w-lg mx-auto mb-8 drop-shadow-md tracking-wide">
+          Стиль · точность · характер
+        </p>
+        <a
+          id="hero-map-link"
+          href="https://www.google.com/maps/search/?api=1&amp;query=38.5598,68.7874"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center justify-center gap-2 text-gray-400 hover:text-gold text-sm mb-8 transition-colors duration-300"
+        >
+          <svg class="w-4 h-4 text-gold shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          <span id="hero-address">г. Душанбе, ул. Примерная, 12</span>
+        </a>
+        <div class="hero-actions flex flex-col sm:flex-row items-center justify-center gap-3">
+          <a data-telegram href="https://t.me/your_barber_bot" target="_blank" rel="noopener noreferrer" class="hero-primary-btn">
+            Записаться в Telegram
+          </a>
+          <a href="#services" class="hero-secondary-btn">
+            Смотреть услуги
+          </a>
+        </div>
+      </div>
+      <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce text-gold/50">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+      </div>
+    </section>
+
+    <!-- Advantages -->
+    <section id="advantages" class="section-panel py-20 sm:py-28 bg-dark-card">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="text-center mb-14 reveal">
+          <h2 class="font-display text-3xl sm:text-4xl font-bold mb-3">Почему мы</h2>
+          <p class="text-gray-500 max-w-md mx-auto">Заказ онлайн — визит в салон своими ногами</p>
+        </div>
+        <div class="grid sm:grid-cols-3 gap-6 sm:gap-8">
+          <article class="reveal feature-card card-hover p-8 rounded-2xl bg-dark border border-dark-border text-center">
+            <div class="w-14 h-14 mx-auto mb-5 rounded-full bg-gold/10 flex items-center justify-center text-gold">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <h3 class="font-display text-xl font-semibold mb-2 text-gold">Опыт</h3>
+            <p class="text-gray-400 text-sm leading-relaxed">Мастера с опытом от 5 лет. Классика, фейд, борода — на высшем уровне.</p>
+          </article>
+          <article class="reveal feature-card card-hover p-8 rounded-2xl bg-dark border border-dark-border text-center" style="transition-delay: 0.1s">
+            <div class="w-14 h-14 mx-auto mb-5 rounded-full bg-gold/10 flex items-center justify-center text-gold">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+            </div>
+            <h3 class="font-display text-xl font-semibold mb-2 text-gold">Качество</h3>
+            <p class="text-gray-400 text-sm leading-relaxed">Премиум инструменты и косметика. Каждая стрижка — как произведение.</p>
+          </article>
+          <article class="reveal feature-card card-hover p-8 rounded-2xl bg-dark border border-dark-border text-center" style="transition-delay: 0.2s">
+            <div class="w-14 h-14 mx-auto mb-5 rounded-full bg-gold/10 flex items-center justify-center text-gold">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            </div>
+            <h3 class="font-display text-xl font-semibold mb-2 text-gold">Удобно</h3>
+            <p class="text-gray-400 text-sm leading-relaxed">Заказ за минуту в Telegram — приходите в салон в удобное время.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services -->
+    <section id="services" class="section-panel section-panel-alt py-20 sm:py-28">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="text-center mb-14 reveal">
+          <h2 class="font-display text-3xl sm:text-4xl font-bold mb-3"><span id="services-title-prefix">4 услуги</span> <span id="services-brand" class="text-gold">SEVEN</span></h2>
+          <p id="services-subtitle" class="text-gray-500 max-w-lg mx-auto">Закажите услугу в Telegram — приходите в салон</p>
+        </div>
+        <div id="services-grid" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6"></div>
+        <p id="price-note" class="reveal text-center text-gray-500 text-sm mt-10">* Цены примерные — уточняйте при заказе в Telegram</p>
+      </div>
+    </section>
+
+    <!-- Masters -->
+    <section id="masters" class="section-panel py-20 sm:py-28">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="text-center mb-14 reveal">
+          <h2 id="masters-title" class="font-display text-3xl sm:text-4xl font-bold mb-3">Наши мастера</h2>
+          <p id="masters-subtitle" class="text-gray-500 max-w-md mx-auto">Команда профессионалов в одном адресе — выберите своего мастера</p>
+        </div>
+        <div id="masters-grid" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+      </div>
+    </section>
+
+    <!-- Contacts -->
+    <section id="contacts" class="section-panel section-panel-alt py-20 sm:py-28 bg-dark-card">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="reveal contact-card max-w-2xl mx-auto text-center p-8 sm:p-12 rounded-3xl bg-dark-card border border-dark-border shadow-2xl">
+          <h2 class="font-display text-3xl sm:text-4xl font-bold mb-3">Контакты</h2>
+          <p id="contacts-subtitle" class="text-gray-500 mb-8">Закажите в Telegram — приходите в салон по адресу на карте</p>
+          <div class="space-y-4 text-left sm:text-center mb-10">
+            <div class="flex sm:justify-center items-center gap-3 text-gray-300">
+              <svg class="w-5 h-5 text-gold shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.086-2.717-1.747-1.079-.675-1.803-1.108-1.108-1.85.73-.773 2.994-2.6 4.554-3.997.615-.493 1.165-.945 1.65-1.381 1.114-.98 2.018-1.84 2.018-1.84s.368-.24.668-.072c.15.088.244.26.244.26s-.04.267-.1.6z"/></svg>
+              <a id="contacts-telegram" data-telegram href="https://t.me/your_barber_bot" target="_blank" rel="noopener noreferrer" class="hover:text-gold transition-colors duration-300">@your_barber_bot</a>
+            </div>
+            <div class="flex sm:justify-center items-start sm:items-center gap-3 text-gray-300">
+              <svg class="w-5 h-5 text-gold shrink-0 mt-0.5 sm:mt-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+              <a id="contacts-map-link" href="https://www.google.com/maps/search/?api=1&amp;query=38.5598,68.7874" target="_blank" rel="noopener noreferrer" class="hover:text-gold transition-colors duration-300"><span id="contacts-address">г. Душанбе, ул. Примерная, 12</span></a>
+            </div>
+            <div class="flex sm:justify-center items-center gap-3 text-gray-300">
+              <svg class="w-5 h-5 text-gold shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <span id="contacts-hours">Пн–Сб: 8:00 – 23:00</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="py-8 border-t border-dark-border">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-500">
+      <span id="footer-brand" class="font-display text-white tracking-widest">SEVEN</span>
+      <p>© 2026 Все права защищены</p>
+    </div>
+  </footer>
+
+  <script src="js/site.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
