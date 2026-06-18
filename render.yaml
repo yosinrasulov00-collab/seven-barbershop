@@ -1,13 +1,18 @@
+# Render.com - free hosting (no card on free plan)
+# Dashboard: New -> Blueprint -> connect GitHub repo
+
 services:
   - type: web
     name: seven-barbershop
-    runtime: docker
+    runtime: node
     plan: free
     region: frankfurt
+    buildCommand: npm install
+    startCommand: npm start
     healthCheckPath: /
     envVars:
-      - key: PORT
-        value: 3000
+      - key: NODE_VERSION
+        value: "22"
       - key: TELEGRAM_BOT_TOKEN
         sync: false
       - key: ADMIN_PASSWORD

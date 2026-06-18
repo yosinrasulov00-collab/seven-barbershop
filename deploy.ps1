@@ -1,5 +1,5 @@
-# Деплой SEVEN на Fly.io (бесплатный хостинг, сайт + Telegram-бот 24/7)
-# Запуск: deploy.bat
+# Deploy SEVEN to Fly.io
+# Run: deploy.bat
 
 $ErrorActionPreference = 'Stop'
 Set-Location $PSScriptRoot
@@ -7,25 +7,88 @@ Set-Location $PSScriptRoot
 $flyDir = Join-Path $env:USERPROFILE '.fly\bin'
 $flyExe = Join-Path $flyDir 'flyctl.exe'
 
+function Download-FlyZip {
+  param([string]$Url, [string]$ZipPath)
+
+  Remove-Item $ZipPath -Force -ErrorAction SilentlyContinue
+  $minBytes = 45000000
+
+  for ($try = 1; $try -le 5; $try++) {
+    Write-Host "Download attempt $try of 5..." -ForegroundColor Yellow
+    try {
+      curl.exe -L --retry 3 --retry-delay 5 -o $ZipPath $Url
+      if ((Test-Path $ZipPath) -and (Get-Item $ZipPath).Length -ge $minBytes) {
+        return
+      }
+      Write-Host "File too small or missing. Retrying..." -ForegroundColor Yellow
+    } catch {
+      Write-Host "Download error: $($_.Exception.Message)" -ForegroundColor Yellow
+    }
+    Start-Sleep -Seconds 3
+  }
+
+  throw 'flyctl download failed. Check internet and run deploy.bat again.'
+}
+
 function Ensure-Fly {
   if (Test-Path $flyExe) { return $flyExe }
   if (Get-Command fly -ErrorAction SilentlyContinue) { return (Get-Command fly).Source }
 
-  Write-Host 'Устанавливаю Fly CLI (один раз, ~50 МБ)...' -ForegroundColor Yellow
+  Write-Host 'Installing Fly CLI (~50 MB, one time)...' -ForegroundColor Yellow
   New-Item -ItemType Directory -Force -Path $flyDir | Out-Null
 
   $release = Invoke-RestMethod -Uri 'https://api.github.com/repos/superfly/flyctl/releases/latest'
   $asset = $release.assets | Where-Object { $_.name -match 'Windows_x86_64\.zip$' } | Select-Object -First 1
-  if (-not $asset) { throw 'Не удалось найти flyctl для Windows на GitHub' }
+  if (-not $asset) { throw 'flyctl for Windows not found on GitHub' }
 
   $zip = Join-Path $env:TEMP 'flyctl-win.zip'
-  curl.exe -L -o $zip $asset.browser_download_url
-  if ((Get-Item $zip).Length -lt 1000000) { throw 'Скачивание flyctl не завершилось — проверьте интернет' }
+  Download-FlyZip -Url $asset.browser_download_url -ZipPath $zip
 
   Expand-Archive -Path $zip -DestinationPath $flyDir -Force
-  if (-not (Test-Path $flyExe)) { throw "После распаковки нет $flyExe" }
-  Write-Host 'Fly CLI установлен.' -ForegroundColor Green
+  if (-not (Test-Path $flyExe)) { throw "flyctl missing after extract: $flyExe" }
+  Write-Host 'Fly CLI installed.' -ForegroundColor Green
   return $flyExe
+}
+
+function Invoke-Fly {
+  param([Parameter(ValueFromRemainingArguments = $true)][string[]]$FlyArgs)
+
+  $prev = $ErrorActionPreference
+  $ErrorActionPreference = 'Continue'
+  $lines = & $fly @FlyArgs 2>&1 | ForEach-Object { "$_" }
+  $code = $LASTEXITCODE
+  $ErrorActionPreference = $prev
+  foreach ($line in $lines) {
+    if ($line -and $line -notmatch '^Warning: Metrics send issue') {
+      Write-Host $line
+    }
+  }
+  return @{ Text = ($lines -join "`n"); ExitCode = $code }
+}
+
+function Ensure-App {
+  param([string]$Name)
+
+  $result = Invoke-Fly apps create $Name
+  if ($result.Text -match 'trial has ended') {
+    Write-Host ''
+    Write-Host 'Fly.io needs a card on your account:' -ForegroundColor Yellow
+    Write-Host '  https://fly.io/trial'
+    Write-Host 'Then run deploy.bat again.'
+    Write-Host ''
+    exit 1
+  }
+  if ($result.ExitCode -eq 0) {
+    Write-Host "App created: $Name" -ForegroundColor Green
+    return
+  }
+  if ($result.Text -match 'already been taken|already exists|is already') {
+    Write-Host "App already exists: $Name" -ForegroundColor Green
+    return
+  }
+
+  Write-Host "Could not create app: $Name" -ForegroundColor Red
+  exit 1
 }
 
 $fly = Ensure-Fly
@@ -35,19 +98,27 @@ try {
   if ($LASTEXITCODE -ne 0) { throw 'not logged in' }
 } catch {
   Write-Host ''
-  Write-Host 'Войдите в Fly.io — откроется браузер.' -ForegroundColor Cyan
-  Write-Host 'Если нет аккаунта: зарегистрируйтесь на https://fly.io (карта нужна, деньги не списывают).'
+  Write-Host 'Sign in to Fly.io (browser will open).' -ForegroundColor Cyan
+  Write-Host 'No account? Register at https://fly.io'
   Write-Host ''
   & $fly auth login
 }
 
 Write-Host ''
-Write-Host '=== Деплой SEVEN на Fly.io ===' -ForegroundColor Cyan
+Write-Host '=== Deploy SEVEN to Fly.io ===' -ForegroundColor Cyan
 Write-Host ''
+
+$appName = 'seven-barber-shop'
+try {
+  $toml = Get-Content (Join-Path $PSScriptRoot 'fly.toml') -Raw
+  if ($toml -match "app\s*=\s*'([^']+)'") { $appName = $Matches[1] }
+} catch {}
+
+Ensure-App -Name $appName
 
 $envFile = Join-Path $PSScriptRoot '.env'
 if (Test-Path $envFile) {
-  Write-Host 'Секреты из .env...'
+  Write-Host 'Loading secrets from .env...'
   $pairs = @()
   Get-Content $envFile | ForEach-Object {
     $line = $_.Trim()
@@ -61,23 +132,20 @@ if (Test-Path $envFile) {
     }
   }
   if ($pairs.Count -gt 0) {
-    & $fly secrets set @pairs
+    $secArgs = @('secrets', 'set', '-a', $appName) + $pairs
+    $sec = Invoke-Fly @secArgs
+    if ($sec.ExitCode -ne 0 -and $sec.Text -notmatch 'already') { exit 1 }
   }
 } else {
-  Write-Host 'Нет .env — задайте секреты вручную после деплоя:' -ForegroundColor Yellow
+  Write-Host 'No .env file. Set secrets manually after deploy:' -ForegroundColor Yellow
   Write-Host '  fly secrets set TELEGRAM_BOT_TOKEN=... ADMIN_PASSWORD=...'
 }
 
-& $fly deploy
-
-$appName = 'seven-barber-shop'
-try {
-  $toml = Get-Content (Join-Path $PSScriptRoot 'fly.toml') -Raw
-  if ($toml -match "app\s*=\s*'([^']+)'") { $appName = $Matches[1] }
-} catch {}
+$deploy = Invoke-Fly deploy -a $appName
+if ($deploy.ExitCode -ne 0) { exit 1 }
 
 Write-Host ''
-Write-Host 'Готово!' -ForegroundColor Green
-Write-Host "Сайт:    https://$appName.fly.dev"
-Write-Host "Админка: https://$appName.fly.dev/admin.html"
+Write-Host 'Done!' -ForegroundColor Green
+Write-Host "Site:  https://$appName.fly.dev"
+Write-Host "Admin: https://$appName.fly.dev/admin.html"
 Write-Host ''
